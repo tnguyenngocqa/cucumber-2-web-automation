@@ -2,21 +2,14 @@ package stepDefinitions;
 
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-import dataProviders.ConfigFileReader;
-import managers.FileReaderManager;
 import managers.PageObjectManager;
 import managers.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.CartPage;
 import pageObjects.CheckoutPage;
 import pageObjects.HomePage;
 import pageObjects.ProductListingPage;
-
-import java.util.concurrent.TimeUnit;
 
 public class Steps {
     private WebDriver driver;
@@ -29,26 +22,6 @@ public class Steps {
     PageObjectManager pageObjectManager;
     WebDriverManager webDriverManager;
 
-
-    @Given("^user is on Home Page$")
-    public void user_is_on_Home_Page() {
-        webDriverManager = new WebDriverManager();
-        driver = webDriverManager.getDriver();
-        driver.get(FileReaderManager.getInstance().getConfigFileReader().getApplicationUrl());
-    }
-
-    @When("^he search for \"([^\"]*)\"$")
-    public void he_search_for(String product) {
-        homePage = pageObjectManager.getHomePage();
-        homePage.perform_search(product);
-    }
-
-    @And("^choose to buy the first item$")
-    public void choose_to_buy_the_first_item() {
-        productListingPage = pageObjectManager.getProductListingPage();
-        productListingPage.select_Product(0);
-        productListingPage.clickOn_AddToCart();
-    }
 
     @And("^moves to checkout from mini cart$")
     public void moves_to_checkout_from_mini_cart() {
