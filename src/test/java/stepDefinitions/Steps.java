@@ -5,7 +5,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import dataProviders.ConfigFileReader;
+import managers.FileReaderManager;
 import managers.PageObjectManager;
+import managers.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,17 +27,14 @@ public class Steps {
     CartPage cartPage;
     CheckoutPage checkoutPage;
     PageObjectManager pageObjectManager;
-    ConfigFileReader configFileReader;
+    WebDriverManager webDriverManager;
+
 
     @Given("^user is on Home Page$")
     public void user_is_on_Home_Page() {
-        configFileReader = new ConfigFileReader();
-        System.setProperty("webdriver.chrome.driver", configFileReader.getDriverPath());
-        driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 10);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(configFileReader.getImplicitlyWait(), TimeUnit.SECONDS);
-        driver.get(configFileReader.getApplicationUrl());
+        webDriverManager = new WebDriverManager();
+        driver = webDriverManager.getDriver();
+        driver.get(FileReaderManager.getInstance().getConfigFileReader().getApplicationUrl());
     }
 
     @When("^he search for \"([^\"]*)\"$")
@@ -84,7 +83,6 @@ public class Steps {
 
     @After
     public void teardown() {
-        driver.quit();
-        System.out.println("^_^ ^_^ Quited browser ^_^ ^_^");
+        webDriverManager.closeDriver();
     }
 }
